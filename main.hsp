@@ -1,0 +1,332 @@
+	#packopt icon "icon.ico"
+	#epack "icon32.png"
+	#define PBS_VERTICAL 0x04
+	#define PBS_SMOOTH 0x01
+	win_x = 500
+	win_y = 405
+	pos_x = (ginfo_dispx - win_x) / 2
+	pos_y = (ginfo_dispy - win_y) / 2
+	range=3048
+	count=0
+	sdim cafe,range
+	screen 0, win_x, win_y, 0, pos_x, pos_y
+	title "Convert GeckoCode to Assembly"
+	color 225,225,225
+	boxf
+	pos 260,173
+	picload "icon32.png",1
+	pos 0,385
+	winobj "msctls_progress32", "", , $50000000, win_x, 20
+	hProgress = objinfo(stat, 2)
+	color 0,0,0
+	objmode 2
+	font "",14
+	pos 25,24
+	mesbox cafe,200,325
+	objsize 200,25
+	button "Convert",*start
+	pos 255,21
+	mes "Convert Geko cheat codes to\nAssembly cheat codes. Wow\nThis is very easy to operate.\nEnter the Gecko Code\nyou want to convert in the input field.\nPress the \"Convert\" button.\n\"Execute Assembly\" creates a\ndecoration for executing the assembly."
+	pos 255,140
+	button "Execute Assembly",*exe
+	stop
+*exe
+		notesel cafe
+		search="\n"
+		strrep cafe, search, search
+		gyou=stat+5
+		if gyou\2{nopc="\nnop":gyou=gyou+1}else{nopc=""}
+		gyou=gyou/2
+		gyou=strf("%X",gyou)
+		objprm 1,"lfs f0,0x"+gyou+"(0)\nnop\n"+cafe+"\nExit:\nlis r31,0x10F\nori r31,r31,0x6AE0\nmtctr r31\nbctr"+nopc
+	stop
+*start
+	if cafe=""{dialog "Oops the code doesn't seem to be written.",1,"Error":stop}
+	notesel cafe
+	repeat range
+	noteget get,0
+	////////////////////////////////////// ram
+	if(instr(get,,"00020000 ")!=-1){
+			notesel cafe
+			noteget get,0
+			log="lis r12,0x"+strmid(get,9,4)+"\nori r12,r12,0x"+strmid(get,13,4)
+			notedel 0
+			objprm 1,cafe+"\n"+log
+			wait 1
+			notesel cafe
+			noteget get,0
+			log="lis r13,0x"+strmid(get,0,4)+"\nori r13,r13,0x"+strmid(get,4,4)+"\nstw r13,0x0(r12)"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	////////////////////////////////////// ram/
+	// èåèï™äÚ
+	if(instr(get,,"03020000 ")!=-1){
+			notesel cafe
+			noteget get,0
+			log="lis r12,0x"+strmid(get,9,4)+"\nori r12,r12,0x"+strmid(get,13,4)+"\nlwz r12,0x0(r12)"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+			wait 1
+			notesel cafe
+			noteget get,0
+			log="lis r13,0x"+strmid(get,0,4)+"\nori r13,r13,0x"+strmid(get,4,4)+"\ncmplw r12,r13\nbne Exit"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	if(instr(get,,"09020000 ")!=-1){
+			notesel cafe
+			noteget get,0
+			log="lis r12,0x"+strmid(get,9,4)+"\nori r12,r12,0x"+strmid(get,13,4)+"\nlwz r12,0x0(r12)"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+			wait 1
+			notesel cafe
+			noteget get,0
+			log="lis r13,0x"+strmid(get,0,4)+"\nori r13,r13,0x"+strmid(get,4,4)+"\ncmplw r12,r13\nbne Exit"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	if(instr(get,,"0A020000 ")!=-1){
+			notesel cafe
+			noteget get,0
+			log="lis r12,0x"+strmid(get,9,4)+"\nori r12,r12,0x"+strmid(get,13,4)+"\nlwz r12,0x0(r12)"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+			wait 1
+			notesel cafe
+			noteget get,0
+			log="lis r13,0x"+strmid(get,0,4)+"\nori r13,r13,0x"+strmid(get,4,4)+"\ncmplw r12,r13\nbne Exit"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	if(instr(get,,"04020000 ")!=-1){
+			notesel cafe
+			noteget get,0
+			log="lis r12,0x"+strmid(get,9,4)+"\nori r12,r12,0x"+strmid(get,13,4)+"\nlwz r12,0x0(r12)"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+			wait 1
+			notesel cafe
+			noteget get,0
+			log="lis r13,0x"+strmid(get,0,4)+"\nori r13,r13,0x"+strmid(get,4,4)+"\ncmplw r12,r13\nbeq Exit"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	if(instr(get,,"05020000 ")!=-1){
+			notesel cafe
+			noteget get,0
+			log="lis r12,0x"+strmid(get,9,4)+"\nori r12,r12,0x"+strmid(get,13,4)+"\nlwz r12,0x0(r12)"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+			wait 1
+			notesel cafe
+			noteget get,0
+			log="lis r13,0x"+strmid(get,0,4)+"\nori r13,r13,0x"+strmid(get,4,4)+"\ncmplw r12,r13\nblt Exit"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	if(instr(get,,"07020000 ")!=-1){
+			notesel cafe
+			noteget get,0
+			log="lis r12,0x"+strmid(get,9,4)+"\nori r12,r12,0x"+strmid(get,13,4)+"\nlwz r12,0x0(r12)"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+			wait 1
+			notesel cafe
+			noteget get,0
+			log="lis r13,0x"+strmid(get,0,4)+"\nori r13,r13,0x"+strmid(get,4,4)+"\ncmplw r12,r13\nble Exit"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	if(instr(get,,"06020000 ")!=-1){
+			notesel cafe
+			noteget get,0
+			log="lis r12,0x"+strmid(get,9,4)+"\nori r12,r12,0x"+strmid(get,13,4)+"\nlwz r12,0x0(r12)"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+			wait 1
+			notesel cafe
+			noteget get,0
+			log="lis r13,0x"+strmid(get,0,4)+"\nori r13,r13,0x"+strmid(get,4,4)+"\ncmplw r12,r13\nbgt Exit"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	if(instr(get,,"08020000 ")!=-1){
+			notesel cafe
+			noteget get,0
+			log="lis r12,0x"+strmid(get,9,4)+"\nori r12,r12,0x"+strmid(get,13,4)+"\nlwz r12,0x0(r12)"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+			wait 1
+			notesel cafe
+			noteget get,0
+			log="lis r13,0x"+strmid(get,0,4)+"\nori r13,r13,0x"+strmid(get,4,4)+"\ncmplw r12,r13\nbge Exit"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	// èåèï™äÚ/
+	////////////////////////////////////// pointer
+	if(instr(get,,"30000000 ")!=-1){
+			notesel cafe
+			noteget get,0
+			log="lis r12,0x"+strmid(get,9,4)+"\nori r12,r12,0x"+strmid(get,13,4)+"\nlwz r12,0x0(r12)"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	if(instr(get,,"10000000 ")!=-1){
+			notesel cafe
+			notedel 0
+			objprm 1,cafe
+		}
+	if(instr(get,,"31000000 ")!=-1){
+			notesel cafe
+			noteget get,0
+			log="lis r13,0x"+strmid(get,9,4)+"\nori r13,r13,0x"+strmid(get,13,4)+"\nadd r12,r12,r13"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	if(instr(get,,"30100000 ")!=-1){
+			notesel cafe
+			noteget get,0
+			log="lwz r12,0x0(r12)"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	if(instr(get,,"00120")!=-1){
+			notesel cafe
+			noteget get,0
+			log="lis r13,0x"+strmid(get,9,4)+"\nori r13,r13,0x"+strmid(get,13,4)+"\nstw r13,0x"+strmid(get,5,3)+"(r12)"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	if(instr(get,,"D0000000 DEADCAFE")!=-1){
+			notesel cafe
+			noteget get,0
+			log="b Exit"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	if(instr(get,,"1210000")!=-1){
+			notesel cafe
+			noteget get,0
+			regi=strmid(get,7,1)
+			regi=14+strf ("%x", regi)
+			log="lis r14,0x"+strmid(get,9,4)+"\nori r14,r14,0x"+strmid(get,13,4)+"\nadd r14,r12,r14"+"\nlwz r"+regi+",0x0(r14)"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	if(instr(get,,"1310000")!=-1){
+			notesel cafe
+			noteget get,0
+			regi=strmid(get,7,1)
+			regi=14+strf ("%x", regi)
+			log="lis r14,0x"+strmid(get,9,4)+"\nori r14,r14,0x"+strmid(get,13,4)+"\nadd r14,r12,r14"+"\nstw r14,0x0(r"+regi+")"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	if(instr(get,,"1012000")!=-1){
+			notesel cafe
+			noteget get,0
+			regi=strmid(get,7,1)
+			regi=14+strf ("%x", regi)
+			log="lis r14,0x"+strmid(get,9,4)+"\nori r14,r14,0x"+strmid(get,13,4)+"\nadd r14,r12,r14"+"\nlwz r"+regi+",0x0(r14)"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	if(instr(get,,"1112000")!=-1){
+			notesel cafe
+			noteget get,0
+			regi=strmid(get,7,1)
+			regi=14+strf ("%x", regi)
+			log="lis r14,0x"+strmid(get,9,4)+"\nori r14,r14,0x"+strmid(get,13,4)+"\nadd r14,r12,r14"+"\nstw r14,0x0(r"+regi+")"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	////////////////////////////////////// pointer/
+	
+	////////////////////////////////////// 12-13
+	if(instr(get,,"1200000")!=-1){
+			notesel cafe
+			noteget get,0
+			regi=strmid(get,7,1)
+			regi=14+strf ("%x", regi)
+			log="lis r14,0x"+strmid(get,9,4)+"\nori r14,r14,0x"+strmid(get,13,4)+"\nlwz r"+regi+",0x0(r14)"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	if(instr(get,,"1300000")!=-1){
+			notesel cafe
+			noteget get,0
+			regi=strmid(get,7,1)
+			regi=14+strf ("%x", regi)
+			log="lis r14,0x"+strmid(get,9,4)+"\nori r14,r14,0x"+strmid(get,13,4)+"\nlwz r14,0x0(r"+regi+")"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	if(instr(get,,"1002000")!=-1){
+			notesel cafe
+			noteget get,0
+			regi=strmid(get,7,1)
+			regi=14+strf ("%x", regi)
+			log="lis r14,0x"+strmid(get,9,4)+"\nori r14,r14,0x"+strmid(get,13,4)+"\nlwz r"+regi+",0x0(r14)"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	if(instr(get,,"1102000")!=-1){
+			notesel cafe
+			noteget get,0
+			regi=strmid(get,7,1)
+			regi=14+strf ("%x", regi)
+			log="lis r14,0x"+strmid(get,9,4)+"\nori r14,r14,0x"+strmid(get,13,4)+"\nlwz r14,0x0(r"+regi+")"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	////////////////////////////////////// 12-13/
+
+	// +
+	if(instr(get,,"14040")!=-1){
+			notesel cafe
+			noteget get,0
+			regi=strmid(get,5,1)
+			regi=14+strf ("%x", regi)
+			log="lis r14,0x"+strmid(get,9,4)+"\nori r14,r14,0x"+strmid(get,13,4)+"\nadd r"+regi+",r"+regi+",r14"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	if(instr(get,,"14050")!=-1){
+			notesel cafe
+			noteget get,0
+			regi=strmid(get,5,1)
+			regi=14+strf ("%x", regi)
+			log="lis r14,0x"+strmid(get,9,4)+"\nori r14,r14,0x"+strmid(get,13,4)+"\nsub r"+regi+",r"+regi+",r14"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	if(instr(get,,"15040")!=-1){
+			notesel cafe
+			noteget get,0
+			regi=strmid(get,5,1)
+			regi=14+strf ("%x", regi)
+			log="lis r14,0x"+strmid(get,9,4)+"\nori r14,r14,0x"+strmid(get,13,4)+"\nadd r"+regi+",r"+regi+",r14"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	if(instr(get,,"15050")!=-1){
+			notesel cafe
+			noteget get,0
+			regi=strmid(get,5,1)
+			regi=14+strf ("%x", regi)
+			log="lis r14,0x"+strmid(get,9,4)+"\nori r14,r14,0x"+strmid(get,13,4)+"\nsub r"+regi+",r"+regi+",r14"
+			notedel 0
+			objprm 1,cafe+"\n"+log
+		}
+	// +/
+	await 1
+	count=count+1
+	sendmsg hProgress, $402,count
+	loop
+	sendmsg hProgress, $402,100
+	wait 50
+	sendmsg hProgress, $402,0
+	stop
